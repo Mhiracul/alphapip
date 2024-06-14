@@ -59,7 +59,7 @@ function WalletComponent() {
       </div>
       <div
         id="wallet-container"
-        className="w-full md:w-2/4 my-10 mx-auto grid grid-cols-12 gap-6"
+        className="w-full md:w-2/4 my-10 mx-auto grid grid-cols-12 gap-6 px-6"
       >
         <div
           onClick={(e) => popupConnectTab(e.target)}
