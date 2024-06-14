@@ -14,13 +14,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="signin" element={<SignIn />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="account/link-wallet" element={<WalletComponent />} />
-          <Route path="u/signup" element={<SignUp />} />
-          <Route path="account/fund-account" element={<FundWallet />} />
-          <Route path="account/deposits" element={<Deposits />} />
-          <Route path="account/notifications" element={<Notifications />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/account/link-wallet" element={<WalletComponent />} />
+          <Route path="/u/signup" element={<SignUp />} />
+          <Route path="/account/fund-account" element={<FundWallet />} />
+          <Route path="/account/deposits" element={<Deposits />} />
+          <Route path="/account/notifications" element={<Notifications />} />
         </Routes>
       </BrowserRouter>
     </>
