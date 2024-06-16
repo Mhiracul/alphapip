@@ -1,4 +1,5 @@
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
@@ -21,9 +22,11 @@ const Banner = () => {
               Backup Now
               <FaArrowRightLong color="#000" />
             </button>
-            <h3 className="text-white underline underline-offset-6 text-sm font-medium inline-flex gap-2 items-center">
-              Sign In <FaArrowRightLong size={10} />
-            </h3>
+            <Link to={"/signin"}>
+              <h3 className="text-white underline underline-offset-6 text-sm font-medium inline-flex gap-2 items-center">
+                Sign In <FaArrowRightLong size={10} />
+              </h3>
+            </Link>
           </div>
         </div>
         <img src="/ledger.png" alt="" className="md:w-1/2 w-full " />
@@ -40,10 +43,12 @@ const Banner = () => {
               bank reset. To safeguard funds and retirement savings, users can
               invest in iso assets like XLM, XRP, and other assets.
             </p>
-            <button className="bg-white w-40 inline-flex gap-3 items-center text-black text-sm px-6 py-4 font-bold rounded-full">
-              Learn More
-              <FaArrowRightLong color="#000" />
-            </button>
+            <Link to={"/signin"}>
+              <button className="bg-white w-40 inline-flex gap-3 items-center text-black text-sm px-6 py-4 font-bold rounded-full">
+                Learn More
+                <FaArrowRightLong color="#000" />
+              </button>
+            </Link>
           </div>
           <img src="/secure.png" alt="" className="md:w-1/2 w-full" />
         </div>
