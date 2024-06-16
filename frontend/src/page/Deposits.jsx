@@ -6,6 +6,7 @@ const Deposits = () => {
   const [navOpen, setNavOpen] = useState(false);
 
   const toggleNav = () => setNavOpen(!navOpen);
+
   return (
     <div>
       <Header toggleNav={toggleNav} navOpen={navOpen} />

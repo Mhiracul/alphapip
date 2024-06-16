@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const session = require("express-session");
+
 const {
   authenticateToken,
   authorizeAdmin,
@@ -12,6 +14,9 @@ const authMiddleware = require("./models/auth");
 const app = express();
 const PORT = process.env.PORT || 4000;
 const mongoUrl = process.env.MONGO_URL;
+
+// Serve static files from the uploads directory
+app.use("/uploads", express.static("uploads"));
 
 // Middleware
 app.use(cors());
@@ -27,7 +32,14 @@ app.get("/admin", authenticateToken, authorizeAdmin, (req, res) => {
 });
 
 app.use("/api", authMiddleware);
-
+app.use(
+  session({
+    secret: "56b0b282cd9fec414100e4d073972cf5682586307535f53658eb9f723d3c4fd7", // Change this to a secure random string
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Adjust secure flag based on your environment (e.g., true for HTTPS)
+  })
+);
 // MongoDB Connection
 mongoose
   .connect(mongoUrl)

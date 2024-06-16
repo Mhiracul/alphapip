@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  country: String, // New field for country
+  signupDate: {
+    type: Date,
+    default: Date.now,
+  },
   isLoggedIn: {
     type: Boolean,
     default: false,

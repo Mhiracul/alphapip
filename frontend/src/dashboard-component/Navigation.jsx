@@ -1,7 +1,34 @@
 import PropTypes from "prop-types";
+import toast from "react-hot-toast";
 import { IoIosArrowRoundDown } from "react-icons/io";
+import { apiBaseUrl } from "../config";
 
 const Navigation = ({ navOpen }) => {
+  const handleLogout = async () => {
+    try {
+      // Perform logout API request
+      const response = await fetch(`${apiBaseUrl}/logout`, {
+        method: "GET",
+        credentials: "same-origin", // Ensure credentials include cookies if any
+      });
+
+      if (response.ok) {
+        // Successful logout
+        toast.success("Logged out successfully"); // Show success toast
+        setTimeout(() => {
+          window.location.href = "/"; // Redirect after a delay (optional)
+        }, 2000); // Redirect after 2 seconds (2000 milliseconds)
+      } else {
+        // Handle logout error
+        console.error("Logout failed:", response.statusText);
+        toast.error("Logout failed. Please try again."); // Show error toast
+      }
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+      toast.error("Logout failed. Please try again."); // Show error toast
+    }
+  };
+
   return (
     <nav
       id="nav"
@@ -11,7 +38,7 @@ const Navigation = ({ navOpen }) => {
     >
       <div className="mt-10 space-y-3 font-grotesque flex flex-col items-end justify-between text-gray-600 text-xs md:text-xs font-semibold">
         <a
-          href="/dashboard"
+          href="/account/dashboard"
           className="bg-gray-900 text-white  border border-amber-50/90 transition-all flex items-center py-2 px-4 rounded-xl ml-2"
         >
           Dashboard
@@ -32,8 +59,9 @@ const Navigation = ({ navOpen }) => {
         </a>
         <a
           href="/account/fund-account"
-          className="bg-black text-white border text-xs border-amber-50/90 transition-all flex items-center py-2 px-4 rounded-xl ml-2"
+          className="bg-black text-white border cursor-pointer text-xs border-amber-50/90 transition-all flex items-center py-2 px-4 rounded-xl ml-2"
         >
+          {" "}
           Fund Wallet
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +80,7 @@ const Navigation = ({ navOpen }) => {
         </a>
 
         <a
-          href="/account/withdrawal"
+          href="/account/withdraw"
           className="bg-black text-white border text-xs border-amber-50/90 transition-all flex items-center py-2 px-4 rounded-xl ml-2"
         >
           {" "}
@@ -173,7 +201,8 @@ const Navigation = ({ navOpen }) => {
           </svg>
         </a>
         <a
-          href="/logout"
+          href="#"
+          onClick={handleLogout}
           className="text-white bg-red-500 transition-all flex items-center py-2 px-4 rounded-xl ml-2"
         >
           Logout

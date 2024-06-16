@@ -5,6 +5,7 @@ const initialState = {
   firstName: "",
   lastName: "",
   userName: "",
+  country: "",
   _id: "",
   role: "",
   status: "",
@@ -24,6 +25,7 @@ export const userSlice = createSlice({
       state.firstName = action.payload.data.firstName;
       state.lastName = action.payload.data.lastName;
       state.userName = action.payload.data.userName;
+      state.country = action.payload.data.country;
       state.email = action.payload.data.email;
       state.referralLink = action.payload.data.referralLink;
       state.referralBonus = action.payload.data.referralBonus;
@@ -39,6 +41,7 @@ export const userSlice = createSlice({
       state.firstName = "";
       state.lastName = "";
       state.userName = "";
+      state.country = "";
       state.email = "";
       state.role = ""; // Reset the role field
       state.status = ""; // Reset the role field
@@ -61,6 +64,7 @@ export const userSlice = createSlice({
         lastName,
         userName,
         email,
+        country,
         role,
         status,
         image,
@@ -72,6 +76,7 @@ export const userSlice = createSlice({
       state.firstName = firstName;
       state.lastName = lastName;
       state.userName = userName;
+      state.country = country;
       state.email = email;
       state.role = role;
       state.resetToken = resetToken;

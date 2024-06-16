@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../redux/userSlice";
+import { apiBaseUrl } from "../config";
 
 const Header = ({ toggleNav, navOpen }) => {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -11,11 +12,29 @@ const Header = ({ toggleNav, navOpen }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      // If user data exists in local storage, update Redux state
-      dispatch(updateUser(JSON.parse(storedUser)));
-    }
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await fetch(`${apiBaseUrl}/user`, {
+            method: "GET",
+            headers: {
+              "auth-token": localStorage.getItem("token"),
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            dispatch(updateUser(data));
+          } else {
+            console.error(data.message);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    fetchUserData();
   }, [dispatch]);
 
   return (

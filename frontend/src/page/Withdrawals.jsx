@@ -20,7 +20,7 @@ const Withdrawals = () => {
         </div>
       </div>
       <div className="flex flex-col justify-center items-center my-10">
-        <p className="text-purple-50 text-3xl md:text-2xl font-semibold">
+        <p className="text-[#363636] text-3xl md:text-2xl font-semibold">
           No Withdrawals
         </p>
       </div>
