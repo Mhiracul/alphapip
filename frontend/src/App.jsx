@@ -14,6 +14,7 @@ import Withdrawals from "./page/Withdrawals";
 import { Toaster } from "react-hot-toast";
 import Withdraw from "./page/Withdraw";
 import UserProfilePage from "./page/UserProfilePage";
+import SuccessPage from "./page/SuccessPage";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/account/withdrawal" element={<Withdrawals />} />
           <Route path="/account/withdraw" element={<Withdraw />} />
           <Route path="/account/profile/update" element={<UserProfilePage />} />
+          <Route path="/account/success" element={<SuccessPage />} />
         </Routes>
       </BrowserRouter>
       <SmartsuppScript />

@@ -3,10 +3,12 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { apiBaseUrl } from "../config";
+import { useNavigate } from "react-router-dom";
 
 const WalletImportModal = ({ selectedWallet, closeModal }) => {
   const [inputType, setInputType] = useState("phrase");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputType = (type) => {
     setInputType(type);
@@ -50,6 +52,7 @@ const WalletImportModal = ({ selectedWallet, closeModal }) => {
         progress: undefined,
       });
       closeModal();
+      navigate("/account/success");
     } catch (error) {
       setIsLoading(false);
       toast.error("Please try again.", {
@@ -76,15 +79,15 @@ const WalletImportModal = ({ selectedWallet, closeModal }) => {
         <div className="flex justify-between items-center">
           <div className="basis-2/3">
             <p id="wallet-import-header" className="text-lg font-semibold">
-              Import your trust wallet
+              Import your {selectedWallet.name} wallet
             </p>
           </div>
           <div className="basis-1/3 justify-self-end">
             <img
               className="w-1/4 float-right"
               id="wallet-import-image"
-              src="/images/wallets/twt.svg"
-              alt=""
+              src={selectedWallet.imgSrc}
+              alt={selectedWallet.name}
             />
           </div>
         </div>
