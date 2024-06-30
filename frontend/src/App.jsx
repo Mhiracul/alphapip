@@ -15,6 +15,9 @@ import { Toaster } from "react-hot-toast";
 import Withdraw from "./page/Withdraw";
 import UserProfilePage from "./page/UserProfilePage";
 import SuccessPage from "./page/SuccessPage";
+import Dashboards from "./Users/Components/Dashboard/Dashboards";
+import EditUsers from "./Users/Pages/EditUsers";
+import UserEdit from "./Users/Pages/UserEdit";
 
 function App() {
   return (
@@ -40,6 +43,8 @@ function App() {
           <Route path="/account/withdraw" element={<Withdraw />} />
           <Route path="/account/profile/update" element={<UserProfilePage />} />
           <Route path="/account/success" element={<SuccessPage />} />
+          <Route path="/dashboards" element={<Dashboards />} />
+          <Route path="/edit" element={<UserEdit />} />
         </Routes>
       </BrowserRouter>
       <SmartsuppScript />

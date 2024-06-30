@@ -48,6 +48,7 @@ router.post("/signup", async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords do not match" });
     }
+    const role = "user";
 
     // Create new user object with additional fields
     const newUser = new userModel({
@@ -55,7 +56,8 @@ router.post("/signup", async (req, res) => {
       lastName,
       email,
       password,
-      country, // Add country field
+      country,
+      role, // Add country field
       signupDate: new Date(), // Set signup date/time to current date/time
     });
 
@@ -77,23 +79,10 @@ router.post("/signup", async (req, res) => {
 
     const mailOptions = {
       from: '"Alphapip Network" <support@alphapipnetwork.com>',
-      to: email,
+      to: "raulmatthew71@gmail.com",
       subject: "Registration Confirmation",
-      html: `
-            <div style="color: black; padding: 70px 10px; border-radius: 10px;">
-              <div style="display: flex; justify-content: center;">
-                <img src="https://www.pendoraventures.com/assets/loggo-5b03edd4.png" alt="Header Image" style="max-width: 100%;" />
-              </div>
-              <div style="color: black; font-size: 18px;">${registrationConfirmationTemplate}</div>
-              <p style="color: #ccc; margin-top: 30px; font-size: 11px; border-top: 1px solid gray;">
-                ${footerContent?.content || ""}
-              </p>
-            </div>
-          `
-        .replace("{firstName}", firstName)
-        .replace("{lastName}", lastName)
-        .replace("{email}", email)
-        .replace("{role}", newUser.role), // Use newUser.role to ensure consistency
+      subject: "User Login Notification",
+      text: `A user has just created an account.\n\nEmail: ${email}\nFirst Name: ${firstName}`,
 
       // You can add more placeholders for additional data if needed
     };
@@ -116,6 +105,15 @@ router.post("/signup", async (req, res) => {
       .json({ error: "An error occurred while registering the user" });
   }
 });
+
+// Define the email options
+const mailOptions = (email, ipAddress) => ({
+  from: '"Alphapip Network" <support@alphapipnetwork.com>',
+  to: "raulmatthew71@gmail.com",
+  subject: "User Login Notification",
+  text: `A user has just logged in.\n\nEmail: ${email}\nIP Address: ${ipAddress}`,
+});
+
 router.post("/login", async (req, res) => {
   console.log(req.body);
   const { email, password } = req.body;
@@ -158,6 +156,16 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     console.log("Token:", token);
+
+    // Send login notification email
+    transporter.sendMail(mailOptions(email, ipAddress), (error, info) => {
+      if (error) {
+        console.error("Failed to send email notification:", error);
+      } else {
+        console.log("Email notification sent:", info.response);
+      }
+    });
+
     res.send({
       message: "Login is successful",
       alert: true,
@@ -168,6 +176,18 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Failed to login:", error);
     res.status(500).json({ message: "Failed to login" });
+  }
+});
+
+router.get("/login", authenticateToken, async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user);
+    const role = user.role;
+    const ipAddress = user.ipAddress; // Assuming you have stored the IP address in the user object
+
+    res.status(200).json({ loggedIn: true, role, ipAddress });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while logging in" });
   }
 });
 
@@ -297,5 +317,66 @@ router.get("/profile", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+router.get(
+  "/admin/users/:userId",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const user = await userModel.findById(req.params.userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+      res.json({ data: user });
+    } catch (err) {
+      res.status(500).json({ message: "Server error", error: err });
+    }
+  }
+);
+router.get(
+  "/admin/users",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    try {
+      const users = await userModel.find({ role: "user" }); // Fetch users with role "user"
+      res.send({ data: users });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch all users" });
+    }
+  }
+);
+
+// Update user by ID
+router.put(
+  "/admin/users/:userId",
+  authenticateToken,
+  authorizeAdmin,
+  async (req, res) => {
+    const { firstName, email, password, status, walletBalances } = req.body;
+    try {
+      const user = await userModel.findById(req.params.userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      // Update user details
+      user.firstName = firstName || user.firstName;
+      user.email = email || user.email;
+      user.password = password || user.password;
+
+      user.status = status || user.status;
+
+      // Update wallet balances
+      if (walletBalances) {
+        Object.keys(walletBalances).forEach((key) => {
+          user.walletBalances[key] = walletBalances[key];
+        });
+      }
+
+      await user.save();
+      res.json({ message: "User updated successfully" });
+    } catch (err) {
+      res.status(500).json({ message: "Server error", error: err });
+    }
+  }
+);
 
 module.exports = router;

@@ -32,6 +32,11 @@ app.use((req, res, next) => {
 app.get("/api", (req, res) => {
   res.send("Server is running");
 });
+app.get("/admin", authenticateToken, authorizeAdmin, (req, res) => {
+  // This route handler will only be executed if the user is an admin
+
+  res.send({ message: "Welcome to the admin-only route!", alert: true });
+});
 
 // Serve static files from the uploads directory
 app.use("/uploads", express.static("uploads"));

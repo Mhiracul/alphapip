@@ -83,8 +83,23 @@ const SignIn = () => {
             localStorage.removeItem("rememberedPassword");
           }
 
-          setTimeout(() => {
-            navigate("/account/dashboard");
+          setTimeout(async () => {
+            // Fetch the role using the GET /login route
+            const token = localStorage.getItem("token");
+            const loginResponse = await fetch(`${apiBaseUrl}/login`, {
+              method: "GET",
+              headers: {
+                "auth-token": token,
+              },
+            });
+
+            const loginData = await loginResponse.json();
+
+            if (loginData.role === "admin") {
+              navigate("/dashboards");
+            } else {
+              navigate("/account/dashboard");
+            }
           }, 1000);
         } else {
           if (dataRes.message === "Your account has been suspended") {
@@ -110,7 +125,6 @@ const SignIn = () => {
     setIsLoading(false);
     setButtonClicked(false);
   };
-
   return (
     <div>
       <Navbar />

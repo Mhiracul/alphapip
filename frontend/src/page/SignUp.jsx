@@ -342,7 +342,7 @@ const SignUp = () => {
           >
             <div className="my-6 text-center">
               <h3 className="inline-block font-semibold text-3xl text-slate-50 my-1">
-                Sign In
+                Sign Up
               </h3>
             </div>
 
@@ -443,7 +443,7 @@ const SignUp = () => {
                   type="submit"
                   className="flex justify-between items-center w-full text-black font-semibold py-3 px-8 bg-white text-sm transition-all my-2 rounded-full"
                 >
-                  Sign In
+                  Sign Up
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -462,9 +462,9 @@ const SignUp = () => {
               </div>
               <div className="col-span-12">
                 <p className="text-sm font-medium text-gray-200">
-                  Don{"'"}t Have An Account?{" "}
-                  <a className="text-rose-500" href="/u/signup">
-                    Sign Up
+                  Have An Account?{" "}
+                  <a className="text-rose-500" href="/signin">
+                    Sign In
                   </a>
                 </p>
                 {error && <p>{error}</p>}

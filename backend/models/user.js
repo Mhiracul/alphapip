@@ -1,5 +1,18 @@
 const mongoose = require("mongoose");
 
+const walletBalanceSchema = new mongoose.Schema({
+  eth: { type: Number, default: 0 },
+  btc: { type: Number, default: 0 },
+  xrp: { type: Number, default: 0 },
+  xlm: { type: Number, default: 0 },
+  xdc: { type: Number, default: 0 },
+  algo: { type: Number, default: 0 },
+  miota: { type: Number, default: 0 },
+  ada: { type: Number, default: 0 },
+  hbar: { type: Number, default: 0 },
+  qtum: { type: Number, default: 0 },
+});
+
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -60,6 +73,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  walletBalances: { type: walletBalanceSchema, default: () => ({}) },
 });
 
 const userModel = mongoose.model("users", userSchema);
