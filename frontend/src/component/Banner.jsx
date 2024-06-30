@@ -17,11 +17,14 @@ const Banner = () => {
             digital assets and funds, especially in preparation for a global
             event or potential blackout in the near future.
           </p>
+
           <div className="flex gap-6">
-            <button className="bg-white  inline-flex gap-3 items-center text-black text-sm px-6 py-4 font-bold rounded-full">
-              Backup Now
-              <FaArrowRightLong color="#000" />
-            </button>
+            <Link to={"/u/signup"}>
+              <button className="bg-white  inline-flex gap-3 items-center text-black text-sm px-6 py-4 font-bold rounded-full">
+                Backup Now
+                <FaArrowRightLong color="#000" />
+              </button>
+            </Link>
             <Link to={"/signin"}>
               <h3 className="text-white underline underline-offset-6 text-sm font-medium inline-flex gap-2 items-center">
                 Sign In <FaArrowRightLong size={10} />

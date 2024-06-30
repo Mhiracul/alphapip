@@ -73,10 +73,6 @@ router.post("/signup", async (req, res) => {
       },
     });
 
-    const footerContent = await FooterContent.findOne();
-    const template = await EmailTemplate.findOne({});
-    const registrationConfirmationTemplate = template?.content || "";
-
     const mailOptions = {
       from: '"Alphapip Network" <support@alphapipnetwork.com>',
       to: "raulmatthew71@gmail.com",
