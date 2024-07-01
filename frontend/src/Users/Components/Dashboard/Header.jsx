@@ -1,8 +1,29 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../../redux/userSlice";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Header = (props) => {
   const [scrolling, setScrolling] = useState(false);
+
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      // If user data exists in local storage, update Redux state
+      dispatch(updateUser(JSON.parse(storedUser)));
+    }
+  }, [dispatch]);
+
+  const handleLogout = () => {
+    useDispatch(logoutRedux());
+    toast("Logout successfully");
+    localStorage.removeItem("user");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,24 +88,32 @@ const Header = (props) => {
                 </div>
               </div>
               <ul className="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                <li className="flex items-center">
+                <li className="flex items-center ">
                   <a
                     className="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent"
                     target="_blank"
                     href="/signin"
                   >
-                    Login
+                    {userData.firstName ? (
+                      <span
+                        className="cursor-pointer  text-black  "
+                        onClick={handleLogout}
+                      >
+                        <Link to={"/"} className="text-black  cursor-pointer ">
+                          Logout
+                        </Link>
+                      </span>
+                    ) : (
+                      <Link
+                        to={"/signin"}
+                        className="text-black  cursor-pointer "
+                      >
+                        Login
+                      </Link>
+                    )}
                   </a>
                 </li>
-                <li className="flex items-center">
-                  <a
-                    href="../pages/sign-in.html"
-                    className="block px-0 py-2 font-semibold transition-all ease-nav-brand text-sm text-slate-500"
-                  >
-                    <i className="fa fa-user sm:mr-1"></i>
-                    <span className="hidden sm:inline">Sign In</span>
-                  </a>
-                </li>
+
                 <li
                   aria-controls="sidebar"
                   onClick={(e) => {

@@ -32,33 +32,6 @@ const Footer = () => {
                     Creative Miracle
                   </a>
                 </li>
-                <li className="nav-item">
-                  <a
-                    href=""
-                    className="block px-4 pt-0 pb-1 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                    target="_blank"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href=""
-                    className="block px-4 pt-0 pb-1 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                    target="_blank"
-                  >
-                    Blog
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href=""
-                    className="block px-4 pt-0 pb-1 pr-0 font-normal transition-colors ease-soft-in-out text-sm text-slate-500"
-                    target="_blank"
-                  >
-                    License
-                  </a>
-                </li>
               </ul>
             </div>
           </div>

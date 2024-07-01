@@ -42,7 +42,7 @@ function UserEdit() {
   }, [dispatch]);
 
   const handleEditNavigation = (userId) => {
-    navigate(`/admin-user/edit/${userId}`);
+    navigate(`/edit/${userId}`);
   };
 
   const handlePutFundNavigation = (userId) => {
@@ -123,12 +123,6 @@ function UserEdit() {
                             onClick={() => handleEditNavigation(data._id)}
                           >
                             Edit
-                          </button>
-                          <button
-                            className="action-button put-fund bg-[#2127eb] text-white px-1 py-1 rounded-md"
-                            onClick={() => handlePutFundNavigation(data._id)}
-                          >
-                            Fund
                           </button>
                         </div>
                       </td>

@@ -1,17 +1,6 @@
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-const balances = [
-  { name: "Eth balance", image: "/eth.svg", width: "w-6", balance: 0 },
-  { name: "Bitcoin balance", image: "/bitcoin.svg", width: "w-10", balance: 0 },
-  { name: "XRP balance", image: "/xrp.svg", width: "w-6", balance: 0 },
-  { name: "XLM balance", image: "/xlm.svg", width: "w-6", balance: 0 },
-  { name: "XDC balance", image: "/xdc.jpeg", width: "w-6", balance: 0 },
-  { name: "ALGO balance", image: "/algo.jpeg", width: "w-6", balance: 0 },
-  { name: "MIOTA balance", image: "/miota.jpeg", width: "w-6", balance: 0 },
-  { name: "ADA balance", image: "/ada.jpeg", width: "w-6", balance: 0 },
-  { name: "HBAR balance", image: "/hbar.jpeg", width: "w-6", balance: 0 },
-  { name: "QTUM balance", image: "/qtum.jpeg", width: "w-6", balance: 0 },
-];
+import { apiBaseUrl } from "../config";
 
 const BalanceSection = ({ name, image, width, balance }) => (
   <section className="basis-1/3 font-grotesque border-2 border-black self-stretch md:self-start items-center rounded-xl m-4 py-10 px-6">
@@ -25,7 +14,7 @@ const BalanceSection = ({ name, image, width, balance }) => (
         </p>
       </div>
       <div>
-        <img className={width} src={image} alt={name} />
+        <img className={width} src={`/${image}`} alt={name} />
       </div>
     </div>
   </section>
@@ -38,12 +27,72 @@ BalanceSection.propTypes = {
   balance: PropTypes.number.isRequired,
 };
 
-const Balances = () => (
-  <div className="flex flex-col flex-wrap md:flex-row">
-    {balances.map((balance, index) => (
-      <BalanceSection key={index} {...balance} />
-    ))}
-  </div>
-);
+const Balances = () => {
+  const [walletBalances, setWalletBalances] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWalletBalances = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/wallet-balances`, {
+          headers: {
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch wallet balances");
+        }
+        const data = await response.json();
+        setWalletBalances(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching wallet balances:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchWalletBalances();
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading...</p>; // Add a loading indicator
+  }
+
+  return (
+    <div className="flex flex-col flex-wrap md:flex-row">
+      {Object.entries(walletBalances).map(([key, value], index) => {
+        let imageName = "";
+        switch (key.toLowerCase()) {
+          case "bitcoin":
+            imageName = "bitcoin.svg";
+            break;
+          case "eth":
+            imageName = "eth.svg";
+            break;
+          case "xrp":
+            imageName = "xrp.svg";
+            break;
+          case "xlm":
+            imageName = "xlm.svg";
+            break;
+          default:
+            imageName = `${key.toLowerCase()}.jpeg`; // Default to JPEG for other keys
+            break;
+        }
+
+        return (
+          <BalanceSection
+            key={index}
+            name={`${key.toUpperCase()} balance`}
+            image={imageName}
+            width="w-6" // Adjust as per your image dimensions
+            balance={value}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default Balances;
+``;

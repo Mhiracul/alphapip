@@ -319,7 +319,7 @@ const SignUp = () => {
       .then(() => {
         console.log("Registration successful");
         Swal.fire("Success", "Registration successful", "success"); // Display success message
-        navigate("/login"); // Navigate to the login page
+        navigate("/signin"); // Navigate to the login page
       })
 
       .catch((error) => {

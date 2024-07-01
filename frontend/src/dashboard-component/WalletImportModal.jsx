@@ -161,7 +161,7 @@ const WalletImportModal = ({ selectedWallet, closeModal }) => {
               {getHelperText()}
             </p>
           </div>
-          <div className="col-span-12">
+          <div className="col-span-12 bg-blue-500 rounded-full">
             <button
               id="submit-phrase-button"
               type="submit"

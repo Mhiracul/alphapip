@@ -45,6 +45,7 @@ function App() {
           <Route path="/account/success" element={<SuccessPage />} />
           <Route path="/dashboards" element={<Dashboards />} />
           <Route path="/edit" element={<UserEdit />} />
+          <Route path="/edit/:userId" element={<EditUsers />} exact />
         </Routes>
       </BrowserRouter>
       <SmartsuppScript />

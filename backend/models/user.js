@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const walletBalanceSchema = new mongoose.Schema({
   eth: { type: Number, default: 0 },
-  btc: { type: Number, default: 0 },
+  bitcoin: { type: Number, default: 0 },
   xrp: { type: Number, default: 0 },
   xlm: { type: Number, default: 0 },
   xdc: { type: Number, default: 0 },

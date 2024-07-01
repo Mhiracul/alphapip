@@ -1,10 +1,29 @@
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { logoutRedux, updateUser } from "../../../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const trigger = useRef(null);
   const sidebar = useRef(null);
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      // If user data exists in local storage, update Redux state
+      dispatch(updateUser(JSON.parse(storedUser)));
+    }
+  }, [dispatch]);
+
+  const handleLogout = () => {
+    useDispatch(logoutRedux());
+    toast("Logout successfully");
+    localStorage.removeItem("user");
+  };
 
   // close on click outside
   useEffect(() => {
@@ -152,7 +171,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <li className="mt-0.5 w-full">
               <Link
                 className="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-                to="/sign-in"
+                to="/signin"
               >
                 <div className="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
                   <svg
@@ -185,7 +204,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   </svg>
                 </div>
                 <span className="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">
-                  Sign In
+                  {userData.firstName ? (
+                    <p
+                      className="cursor-pointer text-black  "
+                      onClick={handleLogout}
+                    >
+                      <Link to={"/"} className="text-black  cursor-pointer ">
+                        Logout
+                      </Link>
+                    </p>
+                  ) : (
+                    <Link
+                      to={"/signin"}
+                      className="text-black  cursor-pointer "
+                    >
+                      Login
+                    </Link>
+                  )}
                 </span>
               </Link>
             </li>

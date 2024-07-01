@@ -269,15 +269,47 @@ router.post("/import-wallet", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  // Clear session and cookies
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error destroying session:", err);
-      return res.status(500).json({ message: "Error logging out" });
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return res.status(500).json({ message: "Error logging out" });
+      }
+      res.clearCookie("sessionID");
+      res.sendStatus(200);
+    });
+  } else {
+    res.sendStatus(200); // If no session exists, still send 200 OK
+  }
+});
+
+router.get("/wallet-balances", authenticateToken, async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-    res.clearCookie("sessionID"); // Clear any session cookies if used
-    res.sendStatus(200); // Send 200 OK response if logout is successful
-  });
+
+    const walletBalances = {
+      eth: user.walletBalances.eth,
+      bitcoin: user.walletBalances.bitcoin,
+      xrp: user.walletBalances.xrp,
+      xlm: user.walletBalances.xlm,
+      xdc: user.walletBalances.xdc,
+      algo: user.walletBalances.algo,
+      miota: user.walletBalances.miota,
+      ada: user.walletBalances.ada,
+      hbar: user.walletBalances.hbar,
+      qtum: user.walletBalances.qtum,
+    };
+
+    res.json(walletBalances);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 router.put("/profile", async (req, res) => {
